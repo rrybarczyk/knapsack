@@ -64,12 +64,12 @@ impl Mempool {
             }
         }
 
-        let keep_weight = max_weight;
-        for i in (1..n).rev() {
+        let mut keep_weight = max_weight;
+        for i in (1..=n).rev() {
             let curr_pos = keep_mat.to_position(i, keep_weight);
             if keep_mat.data[curr_pos] == 1 {
-                println!("include this index: {} tx: {}", i, self.mempool[i].txid);
-                keep_weight.saturating_sub(self.mempool[i].weight as usize);
+                println!("include this index: {} tx: {}", i, self.mempool[i - 1].txid);
+                keep_weight = keep_weight.saturating_sub(self.mempool[i - 1].weight as usize);
             }
         }
 

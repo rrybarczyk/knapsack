@@ -12,6 +12,6 @@ pub fn run() {
     let tx3 = Tx::new(String::from("0xa73590"), 50, 3, tx3_parents);
 
     let max_weight = 10;
-    let mempool = Mempool::new(vec![tx0, tx1, tx2, tx3], max_weight);
+    let mempool = Mempool::new(vec![tx2, tx0, tx3, tx1], max_weight);
     mempool.knapsack();
 }
