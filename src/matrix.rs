@@ -26,7 +26,12 @@ impl Matrix {
         if (col * row) == data.len() {
             Matrix { data, row, col }
         } else {
-            panic!("{} not enough elements to populate {} x {} matrix.", data.len(), row, col);
+            panic!(
+                "{} not enough elements to populate {} x {} matrix.",
+                data.len(),
+                row,
+                col
+            );
         }
     }
 
