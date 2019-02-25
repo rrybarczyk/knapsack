@@ -1,6 +1,16 @@
+use std::fs;
+use std::path::Path;
+// use csv::StringRecord;
+use std::error::Error;
+use std::io;
+// use std::process;
+use std::fs::OpenOptions;
+use std::io::prelude::*;
+
+
 use crate::matrix::Matrix;
 
-#[derive(Debug)]
+#[derive(Debug, Deserialize)]
 pub struct Tx {
     pub txid: String,
     pub value: u64,
@@ -8,16 +18,11 @@ pub struct Tx {
     pub parent: Option<Vec<String>>,
 }
 
-impl Tx {
-    pub fn new(txid: String, value: u64, weight: u64, parent: Option<Vec<String>>) -> Tx {
-        Tx {
-            txid,
-            value,
-            weight,
-            parent,
-        }
-    }
-}
+// impl Tx {
+//     pub fn new(txid: String, value: u64, weight: u64, parent: Option<Vec<String>>) -> Tx {
+//         Tx { txid, value, weight, parent, }
+//     }
+// }
 
 pub struct Mempool {
     pub mempool: Vec<Tx>,
@@ -25,11 +30,47 @@ pub struct Mempool {
 }
 
 impl Mempool {
-    pub fn new(mempool: Vec<Tx>, max_weight: usize) -> Mempool {
+    pub fn new(max_weight: usize) -> Mempool {
+        let mempool_vec = Mempool::read_csv();
         Mempool {
-            mempool,
-            max_weight,
+            mempool: mempool_vec.unwrap(),
+            max_weight: max_weight,
         }
+    }
+
+    fn read_csv() -> Result<Vec<Tx>, Box<Error>> {
+	let mut rdr = csv::ReaderBuilder::new()
+	    .has_headers(false)
+	    .from_reader(io::stdin());
+	let mut mempool_vec = Vec::new();
+	for result in rdr.records() {
+	    let record = result?;
+	    let row: Tx = record.deserialize(None)?;
+
+	    mempool_vec.push(row);
+	}   
+
+	Ok(mempool_vec)
+    }
+
+    fn clear_result() {
+        if Path::new("./tx_result.txt").exists() {
+            fs::remove_file("tx_result.txt").unwrap();
+        }
+    }
+
+    fn write_tx(selected_tx: &str) {
+
+	let mut file = OpenOptions::new()
+	    .write(true)
+            .create(true)
+	    .append(true)
+	    .open("./tx_result.txt")
+	    .unwrap();
+
+	if let Err(e) = writeln!(file, "{}", selected_tx) {
+	    eprintln!("Couldn't write to file: {}", e);
+	}
     }
 
     pub fn knapsack(&self) {
@@ -64,17 +105,14 @@ impl Mempool {
             }
         }
 
+        Mempool::clear_result();
         let mut keep_weight = max_weight;
         for i in (1..=n).rev() {
             let curr_pos = keep_mat.to_position(i, keep_weight);
             if keep_mat.data[curr_pos] == 1 {
-                println!("include this index: {} tx: {}", i, self.mempool[i - 1].txid);
+                Mempool::write_tx(&self.mempool[i-1].txid);
                 keep_weight = keep_weight.saturating_sub(self.mempool[i - 1].weight as usize);
             }
         }
-
-        println!("ks_mat: {}", ks_mat);
-        println!("keep_weight: {}", keep_weight);
-        println!("keep_mat: {}", keep_mat);
     }
 }
