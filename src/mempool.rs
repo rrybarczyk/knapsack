@@ -1,12 +1,9 @@
-use std::fs;
-use std::path::Path;
-// use csv::StringRecord;
 use std::error::Error;
-use std::io;
-// use std::process;
+use std::fs;
 use std::fs::OpenOptions;
+use std::io;
 use std::io::prelude::*;
-
+use std::path::Path;
 
 use crate::matrix::Matrix;
 
@@ -17,12 +14,6 @@ pub struct Tx {
     pub weight: u64,
     pub parent: Option<Vec<String>>,
 }
-
-// impl Tx {
-//     pub fn new(txid: String, value: u64, weight: u64, parent: Option<Vec<String>>) -> Tx {
-//         Tx { txid, value, weight, parent, }
-//     }
-// }
 
 pub struct Mempool {
     pub mempool: Vec<Tx>,
@@ -39,18 +30,18 @@ impl Mempool {
     }
 
     fn read_csv() -> Result<Vec<Tx>, Box<Error>> {
-	let mut rdr = csv::ReaderBuilder::new()
-	    .has_headers(false)
-	    .from_reader(io::stdin());
-	let mut mempool_vec = Vec::new();
-	for result in rdr.records() {
-	    let record = result?;
-	    let row: Tx = record.deserialize(None)?;
+        let mut rdr = csv::ReaderBuilder::new()
+            .has_headers(false)
+            .from_reader(io::stdin());
+        let mut mempool_vec = Vec::new();
+        for result in rdr.records() {
+            let record = result?;
+            let row: Tx = record.deserialize(None)?;
 
-	    mempool_vec.push(row);
-	}   
+            mempool_vec.push(row);
+        }
 
-	Ok(mempool_vec)
+        Ok(mempool_vec)
     }
 
     fn clear_result() {
@@ -60,17 +51,16 @@ impl Mempool {
     }
 
     fn write_tx(selected_tx: &str) {
-
-	let mut file = OpenOptions::new()
-	    .write(true)
+        let mut file = OpenOptions::new()
+            .write(true)
             .create(true)
-	    .append(true)
-	    .open("./tx_result.txt")
-	    .unwrap();
+            .append(true)
+            .open("./tx_result.txt")
+            .unwrap();
 
-	if let Err(e) = writeln!(file, "{}", selected_tx) {
-	    eprintln!("Couldn't write to file: {}", e);
-	}
+        if let Err(e) = writeln!(file, "{}", selected_tx) {
+            eprintln!("Couldn't write to file: {}", e);
+        }
     }
 
     pub fn knapsack(&self) {
@@ -110,7 +100,7 @@ impl Mempool {
         for i in (1..=n).rev() {
             let curr_pos = keep_mat.to_position(i, keep_weight);
             if keep_mat.data[curr_pos] == 1 {
-                Mempool::write_tx(&self.mempool[i-1].txid);
+                Mempool::write_tx(&self.mempool[i - 1].txid);
                 keep_weight = keep_weight.saturating_sub(self.mempool[i - 1].weight as usize);
             }
         }

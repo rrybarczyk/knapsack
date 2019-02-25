@@ -1,4 +1,4 @@
-use crate::mempool::{Mempool};
+use crate::mempool::Mempool;
 
 pub fn run() {
     let max_weight = 4000000;
