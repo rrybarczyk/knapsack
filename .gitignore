@@ -1,2 +1,6 @@
 /target
 **/*.rs.bk
+
+docs/*.aux
+docs/*.log
+docs/*.out
