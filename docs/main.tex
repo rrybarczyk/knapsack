@@ -1,0 +1,68 @@
+\documentclass{article}
+
+\usepackage[nonumberlist, shortcuts]{glossaries}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsthm, amssymb, mathtools, color, graphicx}
+\usepackage{parskip}
+\setlength{\parskip}{0.8\baselineskip}
+
+% allows use of figure placement specifier [H]
+\usepackage{float}  
+
+\usepackage{nomencl}
+
+\usepackage[format=plain, labelfont={bf,it}, textfont=it]{caption}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=blue,      
+    urlcolor=black,
+    citecolor=black,
+}
+
+\begin{document}
+0/1 Knapsack \\
+\begin{align}
+    \text{maximize} \qquad   &\sum_{j=1}^n p_j x_j \\
+    \text{subject to} \qquad &\sum_{j=1}^n w_j x_j \leq c, \\
+                             &x_j \in \{0, 1\}, \qquad j=1,...,n.
+\end{align}
+
+where
+
+\begin{align*}
+    p_j &\qquad \text{value of $jth$ tx} \\
+    x_j &\qquad \text{$jth$ binary variable decision} \\
+    w_j &\qquad \text{weight of $jth$ tx} \\
+    c   &\qquad \text{maximum capacity} \\
+    n   &\qquad \text{number of items}
+\end{align*}
+
+
+Precedence Constraint Knapsack Problem (PCKP) \\
+
+\begin{align}
+    \text{maximize} \qquad   &\sum_{j=1}^n p_j x_j \\
+    \text{subject to} \qquad &\sum_{j=1}^n w_j x_j \leq c, \\
+                             &x_i \geq x_j, \qquad (i,j) \in E, \\
+                             &x_j \in {0, 1}, \qquad j=1,...,n.
+\end{align}
+
+where
+
+\begin{align*}
+    p_j &\qquad \text{value of $jth$ tx} \\
+    x_j &\qquad \text{$jth$ binary variable decision} \\
+    x_i &\qquad \text{$ith$ binary variable decision} \\
+    w_j &\qquad \text{weight of $jth$ tx} \\
+    c   &\qquad \text{maximum capacity} \\
+    n   &\qquad \text{number of items} \\
+    G   &\qquad \text{directed, acyclic graph $G(V,E)$} \\
+    E   &\qquad \text{edge in graph $G(V,E)$} \\
+    V   &\qquad \text{node in graph $G(V,E)$, $V=\{1,...,n\}$}
+\end{align*}
+
+
+
+\end{document}
