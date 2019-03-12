@@ -12,8 +12,8 @@ The problem of selecting transactions to maximize a fee, while keeping the combi
 This problem can be solved recursively (*O(2^n)*, or dynamically (*O(nW)*, n=#txs, W=#weights).
 The dynamic programming approach is done here, and is formalized as:  
 
-![0/1 Knapsack](./docs/fig-01k-eqs "0/1 Knapsack Equations")
-![0/1 Knapsack](./docs/fig-01k-vars "0/1 Knapsack Variables")
+![0/1 Knapsack](https://github.com/rrybarczyk/knapsack/blob/master/docs/fig-01k-eqs.png "0/1 Knapsack Equations")
+![0/1 Knapsack](https://github.com/rrybarczyk/knapsack/blob/master/docs/fig-01k-vars.png "0/1 Knapsack Variables")
 
 
 This does not address the full problem, however, because it does not enforce the parent-child constraint.
@@ -21,8 +21,8 @@ This constraint turns the 0/1 knapsack problem into a *precedence constraint kna
 
 This problem can be represented with a directed, acyclic graph (DAG) *G=(V,E)*.
 
-![PCKP](./docs/fig-pckp-eqs "PCKP Equations")
-![PCKP](./docs/fig-pckp-vars "PCKP Variables")
+![PCKP](https://github.com/rrybarczyk/knapsack/blob/master/docs/fig-pckp-eqs.png "PCKP Equations")
+![PCKP](https://github.com/rrybarczyk/knapsack/blob/master/docs/fig-pckp-vars.png "PCKP Variables")
 
 There have been several solutions posed, many choose to reduce the problem into a tree structure and then use various algorithms including the left-right approach, a branch and bound, and a depth-first-search appoach. None of these properly acocunt for the complex parent-child relationships in the problem however.
 
